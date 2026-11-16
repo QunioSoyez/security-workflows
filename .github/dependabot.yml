@@ -1,0 +1,38 @@
+# Dependabot version updates for the shared security workflow (AppSec pipeline Phase 1 step 3).
+# PUBLIC repo: Dependabot PRs cost no Actions minutes.
+#
+# After merging any update here, tag a new release (vX.Y.Z) so caller repos'
+# Dependabot can bump their "@<SHA> # vX.Y.Z" pin. Untagged changes never reach callers.
+version: 2
+updates:
+  # actions/checkout in .github/workflows/security-scan.yml
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "sunday"
+      time: "20:00"
+      timezone: "America/New_York"
+    cooldown:
+      default-days: 7
+    groups:
+      github-actions:
+        patterns:
+          - "*"
+    commit-message:
+      prefix: "deps(actions)"
+
+  # Semgrep image NOTIFIER. Dependabot doesn't update container: images inside workflow
+  # files, so it watches .github/semgrep/Dockerfile instead. Its PR only changes that file:
+  # copy the new tag + digest into security-scan.yml in the same PR before merging.
+  - package-ecosystem: "docker"
+    directory: "/.github/semgrep"
+    schedule:
+      interval: "weekly"
+      day: "sunday"
+      time: "20:00"
+      timezone: "America/New_York"
+    cooldown:
+      default-days: 7
+    commit-message:
+      prefix: "deps(semgrep)"
